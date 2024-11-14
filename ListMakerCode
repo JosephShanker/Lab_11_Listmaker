@@ -1,0 +1,81 @@
+import java.util.ArrayList;
+
+public class Lab_11_Listmaker {
+    private static ArrayList<String> list = new ArrayList<>();
+
+    public static void main(String[] args) {
+        boolean running = true;
+
+        while (running) {
+            displayMenu();
+            String command = SafeInput.getRegExString("Enter command: ", "[AaDdIiPpQq]").toUpperCase();
+
+            switch (command) {
+
+                case "A": addItem(); break;
+                    case "D": deleteItem(); break;
+                        case "I": insertItem(); break;
+                            case "P": printList(); break;
+                                case "Q": running = quitProgram(); break;
+            }
+        }
+    }
+
+    private static void displayMenu() {
+        System.out.println("\nCurrent List:");
+        for (int i = 0; i < list.size(); i++) {
+            System.out.printf("%d: %s\n", i + 1, list.get(i));
+        }
+
+        System.out.println("\nMenu:");
+            System.out.println("A - Add item");
+                System.out.println("D - Delete item");
+                    System.out.println("I - Insert item");
+                        System.out.println("P - Print list");
+                            System.out.println("Q - Quit program");
+    }
+
+    private static void addItem() {
+        String item = SafeInput.getRegExString("Enter an item to add: ", ".+");
+        list.add(item);
+        System.out.println("Item added.");
+    }
+
+    private static void deleteItem() {
+        if (list.isEmpty()) {
+            System.out.println("The list is empty.");
+            return;
+        }
+        int itemIndex = SafeInput.getRangedInt("Enter item number to delete: ", 1, list.size()) - 1;
+        list.remove(itemIndex);
+        System.out.println("Item deleted.");
+    }
+
+    private static void insertItem() {
+        if (list.isEmpty()) {
+            System.out.println("The list is empty. Adding item to the end.");
+            addItem();
+            return;
+        }
+
+        int position = SafeInput.getRangedInt("Enter position to insert the item at: ", 1, list.size() + 1) - 1;
+            String item = SafeInput.getRegExString("Enter an item to insert: ", ".+");
+
+        list.add(position, item);
+        System.out.println("Item inserted.");
+    }
+
+    private static void printList() {
+        if (list.isEmpty()) {
+            System.out.println("The list is currently empty.");
+        } else {
+            System.out.println("Current list:");
+            for (int i = 0; i < list.size(); i++) {
+                System.out.printf("%d: %s\n", i + 1, list.get(i));
+            }
+        }
+    }
+    private static boolean quitProgram() {
+        return SafeInput.getYNConfirm("Are you sure you want to quit?");
+    }
+}
